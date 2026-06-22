@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Newsworthiness — Mon profil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #0f0e0d;
+      --paper:   #f7f5f0;
+      --accent:  #c0392b;
+      --muted:   #8a8278;
+      --border:  #d9d4cc;
+      --card-bg: #ffffff;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+
+    .tagline {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-left: 1px solid var(--border);
+      padding-left: 1.5rem;
+    }
+
+    /* ── Lang switcher ── */
+    .lang-switcher {
+      margin-left: auto;
+      display: flex;
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+    }
+
+    .lang-btn {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      transition: background 0.15s, color 0.15s;
+    }
+    .lang-btn:first-child { border-right: 1.5px solid var(--border); }
+    .lang-btn.active { background: var(--ink); color: var(--paper); }
+    .lang-btn:not(.active):hover { background: var(--border); color: var(--ink); }
+
+    /* ── Main ── */
+    main {
+      flex: 1;
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 3rem 2rem 4rem;
+    }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-title em { color: var(--accent); font-style: italic; }
+
+    .page-subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 520px;
+    }
+
+    /* ── Sliders ── */
+    .themes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+
+    .theme-row {
+      background: var(--card-bg);
+      padding: 1.4rem 1.8rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem 2rem;
+      align-items: center;
+    }
+
+    .theme-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .theme-emoji {
+      margin-right: 0.6rem;
+      font-style: normal;
+    }
+
+    .slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      grid-column: 1 / -1;
+    }
+
+    .slider-track {
+      flex: 1;
+      position: relative;
+      height: 4px;
+      background: var(--border);
+    }
+
+    .slider-fill {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      background: var(--accent);
+      transition: width 0.05s;
+      pointer-events: none;
+    }
+
+    input[type="range"] {
+      position: absolute;
+      left: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .slider-value {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--accent);
+      width: 3rem;
+      text-align: right;
+      letter-spacing: 0.03em;
+      flex-shrink: 0;
+    }
+
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 0.4rem;
+    }
+
+    /* ── Submit ── */
+    .submit-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn-submit {
+      padding: 1rem 2.8rem;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-submit:hover { opacity: 0.8; }
+
+    .hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 600px) {
+      header { flex-wrap: wrap; gap: 0.6rem; }
+      .tagline { display: none; }
+      .theme-row { padding: 1.2rem 1rem; }
+      footer { flex-direction: column; gap: 0.4rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo" href="index.html">News<span>worthiness</span></a>
+    <span class="tagline" data-i18n="tagline"></span>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="page-title" data-i18n-html="title"></h1>
+    <p class="page-subtitle" data-i18n="subtitle"></p>
+
+    <div class="themes-list" id="themes-list"></div>
+
+    <div class="submit-area">
+      <button class="btn-submit" onclick="submitProfile()" data-i18n="cta"></button>
+      <p class="hint" data-i18n="hint"></p>
+    </div>
+  </main>
+
+  <footer>
+    <span>© 2026 Newsworthiness</span>
+    <span data-i18n="footer_tag"></span>
+  </footer>
+
+  <script>
+    // ── Data ──────────────────────────────────────────────────────────────
+    const themes = [
+      { id: "politics",    emoji: "🏛️", fr: "Politique & institutions",              en: "Politics & institutions" },
+      { id: "geopolitics", emoji: "🌍", fr: "Géopolitique, conflits & diplomatie",   en: "Geopolitics, conflicts & diplomacy" },
+      { id: "climate",     emoji: "🌿", fr: "Climat, environnement & catastrophes",  en: "Climate, environment & disasters" },
+      { id: "health",      emoji: "🏥", fr: "Santé & médecine",                      en: "Health & medicine" },
+      { id: "justice",     emoji: "⚖️", fr: "Justice, faits divers & sécurité",      en: "Justice, crime & security" },
+      { id: "economy",     emoji: "📈", fr: "Économie & finance",                    en: "Economy & finance" },
+      { id: "tech",        emoji: "🤖", fr: "Tech & IA",                             en: "Tech & AI" },
+      { id: "sport",       emoji: "🏅", fr: "Sport",                                 en: "Sport" },
+      { id: "culture",     emoji: "🎬", fr: "Culture, médias & divertissement",      en: "Culture, media & entertainment" },
+    ];
+
+    const translations = {
+      fr: {
+        tagline:    "L'actu filtrée par vos goûts",
+        title:      "Vos <em>centres d'intérêt</em>",
+        subtitle:   "Placez chaque curseur selon l'importance que vous accordez à ce thème. Plus le score est élevé, plus vous verrez d'articles sur ce sujet.",
+        cta:        "Voir mes recommandations →",
+        hint:       "Vos préférences sont enregistrées localement, elles ne sont pas partagées.",
+        low:        "Peu",
+        high:       "Beaucoup",
+        footer_tag: "Projet expérimental — accès testeurs",
+      },
+      en: {
+        tagline:    "News filtered by your taste",
+        title:      "Your <em>interests</em>",
+        subtitle:   "Set each slider according to how much you care about this topic. The higher the score, the more articles you'll see on that subject.",
+        cta:        "See my recommendations →",
+        hint:       "Your preferences are stored locally and are not shared.",
+        low:        "Little",
+        high:       "A lot",
+        footer_tag: "Experimental project — tester access",
+      }
+    };
+
+    let currentLang = 'fr';
+
+    // ── Build sliders ─────────────────────────────────────────────────────
+    function buildSliders(lang) {
+      const t = translations[lang];
+      const container = document.getElementById('themes-list');
+      container.innerHTML = '';
+
+      themes.forEach(theme => {
+        const saved = localStorage.getItem('nw_' + theme.id);
+        const val = saved !== null ? parseInt(saved) : 50;
+
+        const row = document.createElement('div');
+        row.className = 'theme-row';
+        row.innerHTML = `
+          <span class="theme-label">
+            <span class="theme-emoji">${theme.emoji}</span>${theme[lang]}
+          </span>
+          <div class="slider-wrap">
+            <div class="slider-track">
+              <div class="slider-fill" id="fill-${theme.id}" style="width:${val}%"></div>
+              <input type="range" min="0" max="100" value="${val}"
+                id="slider-${theme.id}"
+                oninput="updateSlider('${theme.id}', this.value)" />
+            </div>
+            <span class="slider-value" id="val-${theme.id}">${val}%</span>
+          </div>
+          <div class="slider-labels">
+            <span>${t.low}</span>
+            <span>${t.high}</span>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function updateSlider(id, value) {
+      document.getElementById('fill-' + id).style.width = value + '%';
+      document.getElementById('val-' + id).textContent = value + '%';
+      localStorage.setItem('nw_' + id, value);
+    }
+
+    // ── Lang ──────────────────────────────────────────────────────────────
+    function setLang(lang) {
+      currentLang = lang;
+      const t = translations[lang];
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key] !== undefined) el.textContent = t[key];
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (t[key] !== undefined) el.innerHTML = t[key];
+      });
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+      });
+      document.documentElement.lang = lang;
+
+      buildSliders(lang);
+    }
+
+    // ── Submit ────────────────────────────────────────────────────────────
+    function submitProfile() {
+      // Récupère toutes les valeurs
+      const profile = {};
+      themes.forEach(theme => {
+        const slider = document.getElementById('slider-' + theme.id);
+        profile[theme.id] = slider ? parseInt(slider.value) : 50;
+        localStorage.setItem('nw_' + theme.id, profile[theme.id]);
+      });
+
+      // Sauvegarde le profil complet dans localStorage
+      localStorage.setItem('nw_profile', JSON.stringify(profile));
+
+      // Redirige vers la page des recommandations
+      window.location.href = 'news.html';
+    }
+
+    // ── Init ──────────────────────────────────────────────────────────────
+    setLang('fr');
+  </script>
+
+</body>
+</html>
