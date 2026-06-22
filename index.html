@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Newsworthiness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #0f0e0d;
+      --paper:     #f7f5f0;
+      --accent:    #c0392b;
+      --muted:     #8a8278;
+      --border:    #d9d4cc;
+      --card-bg:   #ffffff;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      border-bottom: 2px solid var(--ink);
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      flex: 1;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--accent); }
+
+    .tagline {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-left: 1px solid var(--border);
+      padding-left: 1.5rem;
+    }
+
+    /* ── Lang switcher ── */
+    .lang-switcher {
+      display: flex;
+      gap: 0;
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+    }
+
+    .lang-btn {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .lang-btn:first-child {
+      border-right: 1.5px solid var(--border);
+    }
+
+    .lang-btn.active {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .lang-btn:not(.active):hover {
+      background: var(--border);
+      color: var(--ink);
+    }
+
+    /* ── Hero ── */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .date-line {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      max-width: 700px;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 em {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 0.85rem 2rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .btn:hover { opacity: 0.8; }
+
+    .btn-primary { background: var(--ink); color: var(--paper); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid var(--ink);
+    }
+
+    /* ── Divider ── */
+    .rule {
+      width: 60px;
+      height: 2px;
+      background: var(--accent);
+      margin: 3.5rem auto;
+    }
+
+    /* ── Feature cards ── */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .feature {
+      background: var(--card-bg);
+      padding: 2rem 1.8rem;
+      text-align: left;
+    }
+
+    .feature-num {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .feature h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .feature p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 600px) {
+      header { flex-direction: column; gap: 0.8rem; align-items: flex-start; }
+      .header-left { flex-direction: column; gap: 0.4rem; }
+      .tagline { border-left: none; padding-left: 0; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <a class="logo" href="#">News<span>worthiness</span></a>
+      <span class="tagline" data-i18n="tagline">L'actu filtrée par vos goûts</span>
+    </div>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+  </header>
+
+  <main>
+    <p class="date-line" id="today-date"></p>
+
+    <h1 data-i18n-html="headline"></h1>
+
+    <p class="subtitle" data-i18n="subtitle"></p>
+
+    <div class="cta-group">
+      <a class="btn btn-primary" href="test.html" data-i18n="cta_test"></a>
+      <a class="btn btn-secondary" href="news.html" data-i18n="cta_news"></a>
+    </div>
+
+    <div class="rule"></div>
+
+    <div class="features">
+      <div class="feature">
+        <p class="feature-num" data-i18n="step1_num"></p>
+        <h3 data-i18n="step1_title"></h3>
+        <p data-i18n="step1_desc"></p>
+      </div>
+      <div class="feature">
+        <p class="feature-num" data-i18n="step2_num"></p>
+        <h3 data-i18n="step2_title"></h3>
+        <p data-i18n="step2_desc"></p>
+      </div>
+      <div class="feature">
+        <p class="feature-num" data-i18n="step3_num"></p>
+        <h3 data-i18n="step3_title"></h3>
+        <p data-i18n="step3_desc"></p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span>© 2026 Newsworthiness</span>
+    <span data-i18n="footer_tag"></span>
+  </footer>
+
+  <script>
+    const translations = {
+      fr: {
+        tagline:     "L'actu filtrée par vos goûts",
+        headline:    "Les nouvelles qui<br /><em>comptent pour vous</em>",
+        subtitle:    "Notez quelques articles, et on s'occupe du reste. Newsworthiness apprend vos centres d'intérêt pour vous livrer les news du jour qui méritent vraiment votre attention.",
+        cta_test:    "Commencer le test →",
+        cta_news:    "Voir les news du jour",
+        step1_num:   "Étape 01",
+        step1_title: "Notez des articles",
+        step1_desc:  "Un rapide tour d'horizon : attribuez des étoiles aux sujets qui vous parlent.",
+        step2_num:   "Étape 02",
+        step2_title: "On analyse vos goûts",
+        step2_desc:  "Notre algorithme identifie vos thématiques et styles d'articles préférés.",
+        step3_num:   "Étape 03",
+        step3_title: "Recevez vos news",
+        step3_desc:  "Une sélection personnalisée des articles du jour, triés par pertinence.",
+        footer_tag:  "Projet expérimental — accès testeurs",
+        date_locale: "fr-FR",
+      },
+      en: {
+        tagline:     "News filtered by your taste",
+        headline:    "The stories that<br /><em>matter to you</em>",
+        subtitle:    "Rate a few articles, and we handle the rest. Newsworthiness learns your interests to deliver the day's news that truly deserves your attention.",
+        cta_test:    "Start the test →",
+        cta_news:    "Today's news",
+        step1_num:   "Step 01",
+        step1_title: "Rate articles",
+        step1_desc:  "A quick tour: give stars to the topics that speak to you.",
+        step2_num:   "Step 02",
+        step2_title: "We analyse your taste",
+        step2_desc:  "Our algorithm identifies your favourite themes and article styles.",
+        step3_num:   "Step 03",
+        step3_title: "Receive your news",
+        step3_desc:  "A personalised selection of today's articles, ranked by relevance.",
+        footer_tag:  "Experimental project — tester access",
+        date_locale: "en-GB",
+      }
+    };
+
+    let currentLang = 'fr';
+
+    function setLang(lang) {
+      currentLang = lang;
+      const t = translations[lang];
+
+      // Update all simple text nodes
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key] !== undefined) el.textContent = t[key];
+      });
+
+      // Update elements that need innerHTML (for <em> etc.)
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (t[key] !== undefined) el.innerHTML = t[key];
+      });
+
+      // Update date
+      const d = new Date();
+      document.getElementById('today-date').textContent =
+        d.toLocaleDateString(t.date_locale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+      // Update lang buttons
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+      });
+
+      // Update html lang attribute
+      document.documentElement.lang = lang;
+    }
+
+    // Init
+    setLang('fr');
+  </script>
+
+</body>
+</html>
