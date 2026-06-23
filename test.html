@@ -150,6 +150,7 @@
       position: relative;
       height: 4px;
       background: var(--border);
+      margin: 1.2rem 0 0.6rem;
     }
 
     .slider-fill {
@@ -160,15 +161,28 @@
       pointer-events: none;
     }
 
+    .slider-thumb-emoji {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.4rem;
+      line-height: 1;
+      pointer-events: none;
+      transition: left 0.05s;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+      user-select: none;
+    }
+
     input[type="range"] {
       position: absolute;
       left: 0; top: 50%;
       transform: translateY(-50%);
       width: 100%;
-      height: 100%;
+      height: 2rem;
       opacity: 0;
       cursor: pointer;
       margin: 0;
+      z-index: 2;
     }
 
     .slider-value {
@@ -322,8 +336,9 @@
             <span class="theme-emoji">${theme.emoji}</span>${theme[lang]}
           </span>
           <div class="slider-wrap">
-            <div class="slider-track">
+            <div class="slider-track" id="track-${theme.id}">
               <div class="slider-fill" id="fill-${theme.id}" style="width:${val}%"></div>
+              <span class="slider-thumb-emoji" id="thumb-${theme.id}" style="left:${val}%">${theme.emoji}</span>
               <input type="range" min="0" max="100" value="${val}"
                 id="slider-${theme.id}"
                 oninput="updateSlider('${theme.id}', this.value)" />
@@ -341,6 +356,7 @@
 
     function updateSlider(id, value) {
       document.getElementById('fill-' + id).style.width = value + '%';
+      document.getElementById('thumb-' + id).style.left = value + '%';
       document.getElementById('val-' + id).textContent = value + '%';
       localStorage.setItem('nw_' + id, value);
     }
